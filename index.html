@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Psychic Game</title>
+  <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">   -->
+  <h1>The Psychic Game</h1>        
+  <p>Guess what letter I'm thinking of</p>
+</head>
+
+
+<body>
+    
+    <div id="game">  
+        <h1>Please press a letter key to start playing!</h1>
+    </div>
+
+    <script type="text/javascript">
+    
+    var computerChoices = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+
+    var wins = 0;
+    var losses = 0;
+    var guesses = 9;
+    var lettersGuessed = [];
+    var computerGuess = computerChoices[Math.floor(Math.random() * computerChoices.length)];
+
+    function restart (result) {
+        if (result) {
+            guesses = 9;
+            computerGuess = computerChoices[Math.floor(Math.random() * computerChoices.length)];
+            lettersGuessed = [];
+        }
+    }
+
+    document.onkeyup = function(event) {
+        var userGuess = event.key;
+        
+        if ((event.keyCode > 64 ) && (event.keyCode < 91)){
+            if ((userGuess === computerGuess) && (guesses >= 1)) {
+                wins++;
+                alert("Win!");
+                restart(true);
+            }
+            
+            else if ((userGuess !== computerGuess) && (guesses > 1)) {
+                lettersGuessed.push(userGuess);
+                guesses--;
+            }
+
+            else if ((userGuess !== computerGuess) && (guesses === 1)) {
+                guesses--;
+                losses++;
+                alert("Lost!");
+                restart(true);
+            }
+
+            var html =
+                "<p>Wins: " + wins + "</p>" +
+                "<p>Losses: " + losses + "</p>" +
+                "<p>Guesses Left: " + guesses + "</p>" +
+                "<p>Your Guesses so far: " + lettersGuessed.join(", ") + "</p>";
+            
+            document.querySelector("#game").innerHTML = html; 
+        }
+        else {
+        document.querySelector("#game").innerHTML = "<h1> PRESS A LETTER KEY TO BEGIN! </h1>"
+        }
+    }
+
+    </script>
+
+</body>
+</html>
